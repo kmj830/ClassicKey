@@ -178,6 +178,31 @@ class CipherApiControllerTest {
     }
 
     @Test
+    @DisplayName("API 복호화 모드에서 한글 음절 '양' 자모 분해 복호화 성공 테스트")
+    void testApiDecryptHangulSyllableSuccess() throws Exception {
+        String jsonPayload = """
+                {
+                    "text": "양",
+                    "key": 3,
+                    "mode": "DECRYPT"
+                }
+                """;
+
+        mockMvc.perform(post("/api/cipher")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonPayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultText", is("isi")))
+                .andExpect(jsonPath("$.steps", hasSize(3)))
+                .andExpect(jsonPath("$.steps[0].char", is("양(ㅇ)")))
+                .andExpect(jsonPath("$.steps[0].resultChar", is("i")))
+                .andExpect(jsonPath("$.steps[1].char", is("양(ㅑ)")))
+                .andExpect(jsonPath("$.steps[1].resultChar", is("s")))
+                .andExpect(jsonPath("$.steps[2].char", is("양(ㅇ)")))
+                .andExpect(jsonPath("$.steps[2].resultChar", is("i")));
+    }
+
+    @Test
     @DisplayName("API 테이블 정보 조회 성공")
     void testGetTableInfo() throws Exception {
         mockMvc.perform(get("/api/cipher/table"))

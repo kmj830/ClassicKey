@@ -171,6 +171,25 @@ public class CipherCoreService {
                         .build());
 
                 rawDecryptedChars.add(jamoChar);
+            } else if (HangulUtils.isHangulSyllable(ch)) {
+                // 3. 한글 완성형 음절 -> 초성, 중성, (종성) 자모로 분해 후 각각 영문/숫자로 복원
+                List<Character> jamos = HangulUtils.decomposeSyllable(ch);
+                for (char jamo : jamos) {
+                    int cCode = tableManager.getCipherCode(jamo);
+                    int pCode = ((cCode - key) % n + n) % n;
+                    char pChar = tableManager.getPlainChar(pCode);
+                    String formula = "((" + (cCode - key) + " % " + n + ") + " + n + ") % " + n;
+
+                    steps.add(StepDetail.builder()
+                            .character(ch + "(" + jamo + ")")
+                            .code(cCode)
+                            .formula(formula)
+                            .resultCode(pCode)
+                            .resultChar(String.valueOf(pChar))
+                            .build());
+
+                    rawDecryptedChars.add(pChar);
+                }
             }
         }
 
@@ -209,6 +228,7 @@ public class CipherCoreService {
             } else {
                 boolean valid = (ch == ' ')
                         || tableManager.containsCipherChar(ch)
+                        || HangulUtils.isHangulSyllable(ch)
                         || tableManager.containsPlainChar(ch);
                 if (!valid) {
                     throw new IllegalArgumentException("지원되지 않는 문자입니다: '" + ch + "' (위치: " + (i + 1) + ")");

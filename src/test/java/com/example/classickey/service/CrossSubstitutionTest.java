@@ -75,4 +75,28 @@ class CrossSubstitutionTest {
             assertEquals(sample, dec.getResultText());
         }
     }
+
+    @Test
+    @DisplayName("복호화 모드에서 한글 완성형 음절('양' 등) 직접 입력 시 자모 분해 및 복호화 검증")
+    void testDecryptHangulSyllablesDirectly() {
+        // '양' -> 초성 'ㅇ'(11), 중성 'ㅑ'(21), 종성 'ㅇ'(11)
+        // Key 3 복호화:
+        // (11 - 3) = 8 -> 'i'
+        // (21 - 3) = 18 -> 's'
+        // (11 - 3) = 8 -> 'i'
+        CipherResultDto result = cipherService.decrypt("양", 3);
+        assertNotNull(result);
+        assertEquals("isi", result.getResultText(), "'양'을 키 3으로 복호화하면 'isi'가 되어야 합니다.");
+        assertEquals(3, result.getSteps().size(), "3개의 자모 분해 단계가 생성되어야 합니다.");
+        assertEquals("양(ㅇ)", result.getSteps().get(0).getCharacter());
+        assertEquals("i", result.getSteps().get(0).getResultChar());
+        assertEquals("양(ㅑ)", result.getSteps().get(1).getCharacter());
+        assertEquals("s", result.getSteps().get(1).getResultChar());
+        assertEquals("양(ㅇ)", result.getSteps().get(2).getCharacter());
+        assertEquals("i", result.getSteps().get(2).getResultChar());
+
+        // 대칭성 검증: 'isi'를 키 3으로 암호화하면 'ㅇ', 'ㅑ', 'ㅇ'이 산출됨
+        CipherResultDto encResult = cipherService.encrypt("isi", 3);
+        assertEquals("ㅇㅑㅇ", encResult.getResultText());
+    }
 }
