@@ -35,3 +35,21 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Docs ###
+docs/
+doc/
+
+### Design ###
+DESIGN.md
+design/
+*.fig
+*.sketch
+
+### AI & Agent Configurations ###
+.agents/
+skills-lock.json
+.gemini/
+.claude/
+.cursor/
+.cursorrules

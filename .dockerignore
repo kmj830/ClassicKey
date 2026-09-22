@@ -1,0 +1,9 @@
+.git
+.gradle
+build
+.idea
+*.iml
+.agents
+skills-lock.json
+docs
+DESIGN.md
