@@ -45,8 +45,8 @@
     <header class="hero-section">
         <h1 class="hero-h1">확장형 고전 대칭키 암호 시스템</h1>
         <p class="hero-subtitle">
-<!--            유한환 Z<sub>62</sub> 상에서 덧셈 암호화 및 음수 보정 모듈러 복호화를 수행하며,<br>-->
-            자체 구현 해시 테이블을 통해 O(1) 시간 복잡도로 실시간 추적합니다.
+            유한환 Z<sub>62</sub> 상에서 영문과 한글 간의 상호 교차 치환(Cross-Substitution)과 띄어쓰기 보존을 지원하며,<br>
+            자체 구현 해시 테이블(Separate Chaining)을 통해 O(1) 시간 복잡도로 실시간 추적합니다.
         </p>
     </header>
 
@@ -102,15 +102,15 @@
         </div>
 
         <!-- text-input per DESIGN.md line 510: 1px hairline, rounded.sm 8px, 2px ink focus without glow -->
-        <textarea id="text-input" class="airbnb-textarea" placeholder="암호화할 평문 텍스트를 입력하세요 (영대소문자, 숫자)... e.g. ClassicKey"></textarea>
+        <textarea id="text-input" class="airbnb-textarea" placeholder="암호화할 텍스트를 입력하세요 (영문, 숫자, 한글, 띄어쓰기 지원)... e.g. abc 가나다 2026"></textarea>
 
         <!-- Presets Bar (DESIGN.md category-strip style) -->
         <div class="presets-container">
             <span class="presets-label">빠른 테스트:</span>
-            <button type="button" class="preset-chip" data-mode="ENCRYPT" data-key="15" data-val="ClassicKey">ClassicKey (K=15)</button>
+            <button type="button" class="preset-chip" data-mode="ENCRYPT" data-key="15" data-val="abc 가나다">abc 가나다 (K=15)</button>
+            <button type="button" class="preset-chip" data-mode="ENCRYPT" data-key="7" data-val="ClassicKey 고전 암호">ClassicKey 고전 암호 (K=7)</button>
             <button type="button" class="preset-chip" data-mode="ENCRYPT" data-key="3" data-val="a">a (K=3 • UT-01)</button>
             <button type="button" class="preset-chip" data-mode="ENCRYPT" data-key="5" data-val="9">9 (K=5 • UT-04)</button>
-            <button type="button" class="preset-chip" data-mode="ENCRYPT" data-key="10" data-val="Crypto2026">Crypto2026 (K=10)</button>
         </div>
 
         <!-- Action Buttons (DESIGN.md lines 452, 458: button-primary & button-secondary) -->

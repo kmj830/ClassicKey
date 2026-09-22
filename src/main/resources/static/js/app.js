@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modeDecryptTab.classList.remove('active');
             pillModeLabel.innerHTML = '<span>🔒 암호화 (ENCRYPT)</span>';
             textLabel.textContent = '평문 텍스트 (Plaintext)';
-            textInput.placeholder = '암호화할 평문 텍스트를 입력하세요 (영대소문자, 숫자)... e.g. ClassicKey';
+            textInput.placeholder = '암호화할 텍스트를 입력하세요 (영문, 한글, 숫자, 띄어쓰기)... e.g. abc 가나다 2026';
             btnExecute.innerHTML = '<span>🔒</span> 암호화 실행 (Run)';
             btnSendOpposite.innerHTML = '🔓 복호화 모드로 전환';
             resultMetaLabel.textContent = '변환 완료 • 암호문 (Ciphertext)';
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modeEncryptTab.classList.remove('active');
             pillModeLabel.innerHTML = '<span>🔓 복호화 (DECRYPT)</span>';
             textLabel.textContent = '암호문 텍스트 (Ciphertext)';
-            textInput.placeholder = '복호화할 한글 자모 암호문을 입력하세요... e.g. ㄺㅖㅋㅝㅝㅓㅍㅸㅏㅣ';
+            textInput.placeholder = '복호화할 암호문 텍스트를 입력하세요... e.g. ㄷㄸㄹ dwfw';
             btnExecute.innerHTML = '<span>🔓</span> 복호화 실행 (Run)';
             btnSendOpposite.innerHTML = '🔒 암호화 모드로 전환';
             resultMetaLabel.textContent = '복원 완료 • 평문 (Plaintext)';

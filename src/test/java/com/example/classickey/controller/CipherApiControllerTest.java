@@ -141,6 +141,43 @@ class CipherApiControllerTest {
     }
 
     @Test
+    @DisplayName("API 한글 및 띄어쓰기 교차 치환 암복호화 테스트")
+    void testApiCrossSubstitutionKoreanSuccess() throws Exception {
+        String jsonPayload = """
+                {
+                    "text": "abc 가나다",
+                    "key": 15,
+                    "mode": "ENCRYPT"
+                }
+                """;
+
+        String encResponse = mockMvc.perform(post("/api/cipher")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonPayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultText", notNullValue()))
+                .andReturn().getResponse().getContentAsString();
+
+        int start = encResponse.indexOf("\"resultText\":\"") + 14;
+        int end = encResponse.indexOf("\"", start);
+        String cipherText = encResponse.substring(start, end);
+
+        String decPayload = String.format("""
+                {
+                    "text": "%s",
+                    "key": 15,
+                    "mode": "DECRYPT"
+                }
+                """, cipherText);
+
+        mockMvc.perform(post("/api/cipher")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(decPayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultText", is("abc 가나다")));
+    }
+
+    @Test
     @DisplayName("API 테이블 정보 조회 성공")
     void testGetTableInfo() throws Exception {
         mockMvc.perform(get("/api/cipher/table"))
