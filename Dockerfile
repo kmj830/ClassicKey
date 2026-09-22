@@ -1,8 +1,8 @@
-# Multi-stage Dockerfile for ClassicKey Spring Boot Application
+# Multi-stage Dockerfile for ClassicKey Spring Boot on Google Cloud Run
 FROM eclipse-temurin:25-jdk AS builder
 WORKDIR /app
 
-# Copy gradle wrapper and build files first for caching
+# Copy gradle wrapper and configuration files first for efficient caching
 COPY gradlew settings.gradle build.gradle ./
 COPY gradle gradle
 
@@ -16,19 +16,20 @@ RUN ./gradlew dependencies --no-daemon || true
 COPY src src
 COPY table.txt ./
 
-# Build bootJar
+# Build bootJar without running tests (tests already verified in CI)
 RUN ./gradlew bootJar --no-daemon -x test
 
 # Runtime Stage
 FROM eclipse-temurin:25-jre
 WORKDIR /app
 
-# Environment variable for Render port
+# Google Cloud Run injects the PORT environment variable (defaults to 8080)
 ENV PORT=8080
-EXPOSE ${PORT}
+EXPOSE 8080
 
-# Copy jar from builder
+# Copy executable jar from builder stage
 COPY --from=builder /app/build/libs/*.jar app.jar
 COPY table.txt ./
 
-ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT} -jar app.jar"]
+# Optimize JVM memory usage for Cloud Run container limits
+ENTRYPOINT ["sh", "-c", "java -XX:MaxRAMPercentage=75.0 -Dserver.port=${PORT} -jar app.jar"]

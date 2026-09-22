@@ -233,7 +233,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderTableGrid(tableEntries);
 
                 keySlider.max = modulus - 1;
-                modulusBadge.textContent = `Modulus n = ${modulus}`;
+                if (modulusBadge) {
+                    modulusBadge.textContent = `Modulus n = ${modulus}`;
+                }
             }
         } catch (e) {
             console.error('Failed to fetch table info:', e);

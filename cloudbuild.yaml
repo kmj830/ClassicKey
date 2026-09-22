@@ -1,0 +1,26 @@
+steps:
+  # 1. Build Container Image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/classickey:$COMMIT_SHA', '.']
+
+  # 2. Push Container Image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/classickey:$COMMIT_SHA']
+
+  # 3. Deploy to Google Cloud Run (Seoul region: asia-northeast3)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'classickey'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/classickey:$COMMIT_SHA'
+      - '--region'
+      - 'asia-northeast3'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+
+images:
+  - 'gcr.io/$PROJECT_ID/classickey:$COMMIT_SHA'

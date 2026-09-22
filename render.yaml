@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: classickey-cipher
-    runtime: docker
-    plan: free
-    region: singapore
-    envVars:
-      - key: PORT
-        value: 8080

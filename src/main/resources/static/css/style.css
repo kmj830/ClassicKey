@@ -171,22 +171,24 @@ body {
 .badge-guest-favorite {
   background: var(--colors-canvas);
   color: var(--colors-ink);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 6px 14px;
+  padding: 7px 14px;
   border-radius: var(--rounded-full);
   box-shadow: var(--shadow-airbnb);
-  border: 1px solid var(--colors-hairline-soft);
+  border: 1px solid var(--colors-hairline);
   display: flex;
   align-items: center;
   gap: 6px;
+  text-decoration: none;
+  transition: all 0.15s ease;
 }
 
-.badge-guest-favorite .rausch-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: var(--rounded-full);
-  background-color: var(--colors-primary);
+.badge-guest-favorite:hover {
+  background-color: var(--colors-surface-soft);
+  color: var(--colors-primary);
+  border-color: var(--colors-border-strong);
+  box-shadow: rgba(0, 0, 0, 0.04) 0 0 0 1px, rgba(0, 0, 0, 0.08) 0 3px 8px 0;
 }
 
 /* Page Layout Container */
